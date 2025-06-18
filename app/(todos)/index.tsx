@@ -1,28 +1,31 @@
+import { useRouter } from "expo-router";
 import React from "react";
+import { FlatList } from "react-native";
 
-import { Layout } from "@/components";
+import { Layout, TodoItem } from "@/components";
 import { useTodos } from "@/store";
 import { Button, Gap, Text } from "@/ui";
-import { Link, useNavigation } from "expo-router";
-import { FlatList } from "react-native";
 
 const Todos = () => {
   const { todos } = useTodos();
-  const { navigate } = useNavigation();
+  const { navigate } = useRouter();
 
   return (
     <Layout>
-      <Text>Todos</Text>
-      <Button onPress={() => navigate("create" as never)}>CREATE</Button>
+      <Gap />
+      <Text fontSize={28} style={{ fontWeight: "bold" }} center>
+        Todos
+      </Text>
+      <Gap />
+      <Button onPress={() => navigate("/(todos)/create")}>CREATE</Button>
       <Gap />
 
       <FlatList
+        scrollEventThrottle={16}
         data={todos}
-        renderItem={({ item }) => (
-          <Link href={`/(todos)/details/${item._id}`}>
-            <Text>{item.title}</Text>
-          </Link>
-        )}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(t) => t._id}
+        renderItem={({ item }) => <TodoItem todo={item} />}
         ItemSeparatorComponent={Gap}
       />
     </Layout>

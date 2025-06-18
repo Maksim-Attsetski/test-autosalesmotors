@@ -8,12 +8,14 @@ const tintColor = "#0a7ea4";
 export const Colors = {
   light: {
     text: "#11181C",
+    subText: "#333",
     background: "#fff",
     primary: tintColor,
     error: "#e33456",
   },
   dark: {
     text: "#ECEDEE",
+    subText: "#ECEDEE90",
     background: "#151718",
     primary: tintColor,
     error: "#e33456",

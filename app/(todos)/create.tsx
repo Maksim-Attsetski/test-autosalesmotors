@@ -1,10 +1,10 @@
+import { useNavigation } from "expo-router";
 import React, { useState } from "react";
 
 import { Layout } from "@/components";
 import { useTodos } from "@/store";
-import { ITodo } from "@/types";
+import { ITodoCreateDto } from "@/types";
 import { Button, Gap, Input, Text } from "@/ui";
-import { useNavigation } from "expo-router";
 
 const TodosCreate = () => {
   const [title, setTitle] = useState("");
@@ -21,7 +21,7 @@ const TodosCreate = () => {
   };
 
   const onSubmit = () => {
-    const newTodo: Omit<ITodo, "_id" | "created_at"> = {
+    const newTodo: ITodoCreateDto = {
       title,
       description,
       location,
@@ -34,7 +34,10 @@ const TodosCreate = () => {
 
   return (
     <Layout>
-      <Text>TodosCreate</Text>
+      <Gap />
+      <Text fontSize={28} style={{ fontWeight: "bold" }} center>
+        ToDo Creation
+      </Text>
       <Gap />
       <Input
         placeholder="Title"
