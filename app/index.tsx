@@ -7,7 +7,7 @@ export default function HomeScreen() {
   return (
     <Layout>
       <Text>Hello</Text>
-      <Link href={"/(todos)/index"}>
+      <Link href={"/(todos)"}>
         <Text>Open TODOS</Text>
       </Link>
     </Layout>
