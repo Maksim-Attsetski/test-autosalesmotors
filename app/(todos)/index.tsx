@@ -1,34 +1,30 @@
 import React from "react";
 
 import { Layout } from "@/components";
-import { Text } from "@/ui";
-import { Link } from "expo-router";
-import { View } from "react-native";
+import { useTodos } from "@/store";
+import { Button, Gap, Text } from "@/ui";
+import { Link, useNavigation } from "expo-router";
+import { FlatList } from "react-native";
 
 const Todos = () => {
+  const { todos } = useTodos();
+  const { navigate } = useNavigation();
+
   return (
     <Layout>
       <Text>Todos</Text>
-      <Link href={"/(todos)/create"}>
-        <Text>CREATE</Text>
-      </Link>
-      <View style={{ marginVertical: 3 }} />
+      <Button onPress={() => navigate("create" as never)}>CREATE</Button>
+      <Gap />
 
-      <Link href={"/(todos)/details/1"}>
-        <Text>TODO 1</Text>
-      </Link>
-      <View style={{ marginVertical: 3 }} />
-      <Link href={"/(todos)/details/1"}>
-        <Text>TODO 2</Text>
-      </Link>
-      <View style={{ marginVertical: 3 }} />
-      <Link href={"/(todos)/details/1"}>
-        <Text>TODO 3</Text>
-      </Link>
-      <View style={{ marginVertical: 3 }} />
-      <Link href={"/(todos)/details/1"}>
-        <Text>TODO 4</Text>
-      </Link>
+      <FlatList
+        data={todos}
+        renderItem={({ item }) => (
+          <Link href={`/(todos)/details/${item._id}`}>
+            <Text>{item.title}</Text>
+          </Link>
+        )}
+        ItemSeparatorComponent={Gap}
+      />
     </Layout>
   );
 };
