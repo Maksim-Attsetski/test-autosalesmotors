@@ -9,6 +9,9 @@ const Todos = () => {
   return (
     <Layout>
       <Text>Todos</Text>
+      <Link href={"/(todos)/create"}>
+        <Text>CREATE</Text>
+      </Link>
       <View style={{ marginVertical: 3 }} />
 
       <Link href={"/(todos)/details/1"}>
