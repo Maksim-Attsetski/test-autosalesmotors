@@ -1,4 +1,4 @@
-import { useNavigation } from "expo-router";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 
 import { Layout } from "@/components";
@@ -12,12 +12,16 @@ const TodosCreate = () => {
   const [location, setLocation] = useState("");
 
   const { addTodo } = useTodos();
-  const { canGoBack, goBack } = useNavigation();
+  const { canGoBack, back } = useRouter();
 
   const handleClearAll = () => {
     setTitle("");
     setDescription("");
     setLocation("");
+  };
+
+  const handleGoBack = () => {
+    canGoBack() && back();
   };
 
   const onSubmit = () => {
@@ -28,12 +32,15 @@ const TodosCreate = () => {
     };
     addTodo(newTodo);
 
-    canGoBack() && goBack();
+    handleGoBack();
     handleClearAll();
   };
 
   return (
     <Layout>
+      <Gap />
+      <Button onPress={handleGoBack}>Back</Button>
+
       <Gap />
       <Text fontSize={28} style={{ fontWeight: "bold" }} center>
         ToDo Creation

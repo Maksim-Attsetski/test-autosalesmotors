@@ -4,7 +4,7 @@ import { create } from "zustand";
 interface IState {
   todos: ITodo[];
   addTodo: (t: ITodoCreateDto) => void;
-  editTodo: (t: Pick<Partial<ITodo>, "_id">) => void;
+  editTodo: (t: Partial<ITodo>) => void;
   deleteTodo: (id: string) => void;
 }
 

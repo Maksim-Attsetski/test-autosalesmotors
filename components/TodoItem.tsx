@@ -23,9 +23,9 @@ const TodoItem: FC<IProps> = ({ todo }) => {
       <Text fontSize={20} center>
         {todo.title}
       </Text>
-      <Description label="Description">{todo.description}</Description>
       <Gap />
-      <Description label="Location">{todo.location}</Description>
+      <Description label="Created at">{new Date(todo.created_at).toLocaleString()}</Description>
+      <Gap y={3} />
       <Description label="Status">{todoStatuses[todo.status]}</Description>
     </TouchableOpacity>
   );
