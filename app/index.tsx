@@ -1,11 +1,15 @@
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+
+import { Layout } from "@/components";
+import { Text } from "@/ui";
 
 export default function HomeScreen() {
   return (
-    <View>
+    <Layout>
       <Text>Hello</Text>
-      <Link href={"/(todos)/index"}>Open TODOS</Link>
-    </View>
+      <Link href={"/(todos)/index"}>
+        <Text>Open TODOS</Text>
+      </Link>
+    </Layout>
   );
 }
