@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Layout } from "@/components";
+import { Layout, Map } from "@/components";
 import { todoStatuses } from "@/constants";
 import { useThemeColor } from "@/lib/hooks/useThemeColor";
 import { useTodos } from "@/store";
@@ -8,7 +8,7 @@ import { TTodoStatus } from "@/types";
 import { Accordion, Button, Description, Gap, Text } from "@/ui";
 import { useRoute } from "@react-navigation/native";
 import { useRouter } from "expo-router";
-import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 
 const TodosDetails = () => {
@@ -56,6 +56,9 @@ const TodosDetails = () => {
             {todo.title}
           </Text>
 
+          <Map height={250} width={Dimensions.get("screen").width - 32} />
+
+          <Text fontSize={12}>I don`t connect todo location to map</Text>
           <Gap />
           <View style={[{ backgroundColor: colors.background }, styles.card]}>
             <Description label="Description">{todo?.description}</Description>

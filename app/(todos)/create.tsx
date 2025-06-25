@@ -14,10 +14,8 @@ const TodosCreate = () => {
   const [location, setLocation] = useState("");
   const [dueAt, setDueAt] = useState(new Date());
 
-  const { notify, notification } = useNotifications();
-  console.log("====================================");
-  console.log(notification);
-  console.log("====================================");
+  const { notify } = useNotifications();
+
   const { addTodo } = useTodos();
   const { canGoBack, back } = useRouter();
 
@@ -42,9 +40,7 @@ const TodosCreate = () => {
 
     addTodo(newTodo);
     const seconds = dateUtils.getSecondForExpire(dateUtils.getAdjustedDate(-1, "month", dueAt));
-    console.log("====================================");
-    console.log(seconds);
-    console.log("====================================");
+
     await notify(
       {
         title: "You create new ToDo",
