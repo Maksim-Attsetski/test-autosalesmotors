@@ -88,7 +88,9 @@ const TodosCreate = () => {
       <Gap y={3} />
 
       <Button onPress={pickFile}>Выйбрать файл</Button>
+      <Gap y={3} />
       <FileList clearFiles={clearFiles} files={files} />
+      <Gap y={3} />
 
       <DatePicker minimumDate={new Date()} value={dueAt} setValue={setDueAt} />
       <Gap />
