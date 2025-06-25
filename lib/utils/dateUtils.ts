@@ -1,10 +1,24 @@
 type TDate = string | Date | number;
+type TDateType = "year" | "day" | "month";
 
 class DateUtils {
   parseDate<R = Date>(date: TDate = new Date(), expect: "date" | "string" = "date"): R {
     const newDate = new Date(date);
     if (expect === "date") return newDate as R;
     return newDate.toLocaleDateString("ru") as R;
+  }
+
+  getAdjustedDate(value: number, type: TDateType = "year", defaultDate: TDate = new Date()): Date {
+    const date = this.parseDate(defaultDate);
+    if (!Number.isInteger(value)) return date;
+
+    const variants: Record<TDateType, () => void> = {
+      day: () => date.setDate(date.getDate() + value),
+      year: () => date.setFullYear(date.getFullYear() + value),
+      month: () => date.setMonth(date.getMonth() + value),
+    };
+    variants[type]();
+    return date;
   }
 
   getSecondForExpire(date: TDate): number {

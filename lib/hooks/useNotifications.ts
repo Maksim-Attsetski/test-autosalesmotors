@@ -32,12 +32,15 @@ export function useNotifications() {
   return { notify: schedulePushNotification, notification };
 }
 
-async function schedulePushNotification(content: Notifications.NotificationContentInput) {
+async function schedulePushNotification(content: Notifications.NotificationContentInput, seconds: number) {
   await Notifications.scheduleNotificationAsync({
     content,
-    trigger: {
-      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-      seconds: 10,
-    },
+    trigger:
+      seconds < 1
+        ? null
+        : {
+            type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+            seconds,
+          },
   });
 }

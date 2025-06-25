@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import { DatePicker, Layout } from "@/components";
 import { useNotifications } from "@/lib/hooks";
+import { dateUtils } from "@/lib/utils";
 import { useTodos } from "@/store";
 import { ITodoCreateDto } from "@/types";
 import { Button, Gap, Input, Text } from "@/ui";
@@ -13,8 +14,10 @@ const TodosCreate = () => {
   const [location, setLocation] = useState("");
   const [dueAt, setDueAt] = useState(new Date());
 
-  const { notify } = useNotifications();
-
+  const { notify, notification } = useNotifications();
+  console.log("====================================");
+  console.log(notification);
+  console.log("====================================");
   const { addTodo } = useTodos();
   const { canGoBack, back } = useRouter();
 
@@ -38,12 +41,18 @@ const TodosCreate = () => {
     };
 
     addTodo(newTodo);
-
-    await notify({
-      title: "You create new ToDo",
-      body: title,
-      data: { newTodo },
-    });
+    const seconds = dateUtils.getSecondForExpire(dateUtils.getAdjustedDate(-1, "month", dueAt));
+    console.log("====================================");
+    console.log(seconds);
+    console.log("====================================");
+    await notify(
+      {
+        title: "You create new ToDo",
+        body: title,
+        data: { newTodo },
+      },
+      seconds
+    );
 
     handleGoBack();
     handleClearAll();
