@@ -1,14 +1,14 @@
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
-import { DatePicker, FileList, Layout } from "@/components";
+import { BackButton, DatePicker, FileList, Layout } from "@/components";
 import { useFiles, useNotifications } from "@/lib/hooks";
 import { dateUtils } from "@/lib/utils";
 import { useTodos } from "@/store";
 import { ITodoCreateDto } from "@/types";
 import { Button, Gap, Input, Text } from "@/ui";
 
-const TodosCreate = () => {
+const TodosCreate: FC = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -36,7 +36,7 @@ const TodosCreate = () => {
       description,
       location,
       due_at: dueAt.getTime(),
-      attachments: files.map((f) => f.name),
+      attachments: files.map((f) => f._id),
     };
 
     addTodo(newTodo);
@@ -59,7 +59,7 @@ const TodosCreate = () => {
   return (
     <Layout>
       <Gap />
-      <Button onPress={handleGoBack}>Back</Button>
+      <BackButton />
 
       <Gap />
       <Text fontSize={28} style={{ fontWeight: "bold" }} center>
@@ -75,7 +75,14 @@ const TodosCreate = () => {
         errorMsg="Минимум 2 символа"
       />
       <Gap y={3} />
-      <Input placeholder="Description" value={description} onChangeText={setDescription} maxLength={70} />
+      <Input
+        placeholder="Description"
+        multiline
+        numberOfLines={4}
+        value={description}
+        onChangeText={setDescription}
+        maxLength={70}
+      />
       <Gap y={3} />
       <Input
         placeholder="Location"

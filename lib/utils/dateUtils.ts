@@ -37,7 +37,7 @@ class DateUtils {
 
   getDate(date: TDate, monthFormat: Intl.DateTimeFormatOptions["month"] = "long") {
     const parsedDate = new Date(date);
-    return parsedDate.toLocaleDateString("ru-RU", {
+    return parsedDate.toLocaleDateString("en", {
       day: "2-digit",
       month: monthFormat,
       year: "numeric",

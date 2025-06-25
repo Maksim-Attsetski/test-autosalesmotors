@@ -1,19 +1,20 @@
+import { IBaseEntity } from "@/types/shared";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as DocumentPicker from "expo-document-picker";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import { getBaseEntity } from "../utils";
 
-type FileInfo = {
+export interface FileInfo extends IBaseEntity {
   uri: string;
   name: string;
   size?: number | null;
   mimeType?: string | null;
-};
+}
 
 const storageKey = "@/keys/files";
 
-export const useFiles = (initFiles: string[] = [], allowedTypes?: DocumentPicker.DocumentPickerAsset["mimeType"]) => {
-  const [allFiles, setAllFiles] = useState<FileInfo[]>([]);
+export const useFiles = (initFiles?: string[], allowedTypes?: DocumentPicker.DocumentPickerAsset["mimeType"]) => {
   const [files, setFiles] = useState<FileInfo[]>([]);
 
   useEffect(() => {
@@ -22,8 +23,7 @@ export const useFiles = (initFiles: string[] = [], allowedTypes?: DocumentPicker
         const stored = await AsyncStorage.getItem(storageKey);
         if (stored) {
           const storedFiles: FileInfo[] = JSON.parse(stored);
-          setAllFiles(storedFiles);
-          setFiles(storedFiles.filter((file) => initFiles.includes(file.name)));
+          setFiles(storedFiles.filter((file) => (initFiles ?? []).includes(file._id)));
         }
       } catch (error) {
         console.error("Error loading files from storage", error);
@@ -52,6 +52,7 @@ export const useFiles = (initFiles: string[] = [], allowedTypes?: DocumentPicker
       if (result.canceled) return;
 
       const formattedFiles: FileInfo[] = result.assets.map((file) => ({
+        ...getBaseEntity(),
         uri: file.uri,
         name: file.name,
         size: file.size,
@@ -66,21 +67,24 @@ export const useFiles = (initFiles: string[] = [], allowedTypes?: DocumentPicker
     }
   };
 
-  const clearFiles = async (name?: string) => {
-    if (name) setFiles((prev) => prev.filter((f) => f.name !== name));
+  const clearFiles = async (_id?: string) => {
+    if (_id) setFiles((prev) => prev.filter((f) => f._id !== _id));
     else setFiles([]);
-    // await AsyncStorage.removeItem(storageKey);
   };
+
   const clearAllFiles = async () => {
     setFiles([]);
-    setAllFiles([]);
     await AsyncStorage.removeItem(storageKey);
   };
 
   const saveFiles = async () => {
     setFiles([]);
-    await saveFilesToStorage([...allFiles, ...files]);
+    const stored = await AsyncStorage.getItem(storageKey);
+    if (stored) {
+      const storedFiles: FileInfo[] = JSON.parse(stored);
+      await saveFilesToStorage([...storedFiles, ...files]);
+    }
   };
 
-  return { pickFile, clearFiles, clearAllFiles, saveFiles, files, allFiles };
+  return { pickFile, clearFiles, clearAllFiles, saveFiles, files };
 };

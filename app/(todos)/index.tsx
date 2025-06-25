@@ -2,7 +2,7 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { FlatList } from "react-native";
 
-import { Layout, TodoItem } from "@/components";
+import { BackButton, Layout, TodoItem } from "@/components";
 import { todoStatuses } from "@/constants";
 import { useTodos } from "@/store";
 import { ITodo } from "@/types";
@@ -41,26 +41,41 @@ const Todos = () => {
 
   return (
     <Layout>
-      <Gap />
-      <Text fontSize={28} style={{ fontWeight: "bold" }} center>
-        Todos
-      </Text>
-      <Gap />
-      <Button onPress={() => navigate("/(todos)/create")}>CREATE</Button>
-      <Gap />
-
-      <Select title="Sort by" activeOption={sortBy} setActiveOption={setSortBy} options={sortOptions} />
-      <Gap />
-      <Select title="Filter" activeOption={filter} setActiveOption={setFilter} options={filterOptions} />
-      <Gap />
-
       <FlatList
         scrollEventThrottle={16}
         data={sortedTodos}
+        ListHeaderComponent={
+          <>
+            <Gap />
+            <BackButton />
+            <Gap />
+            <Text fontSize={28} style={{ fontWeight: "bold" }} center>
+              Todos
+            </Text>
+            <Gap />
+            <Button onPress={() => navigate("/(todos)/create")}>CREATE</Button>
+            <Gap />
+
+            {todos.length > 0 && (
+              <>
+                <Select title="Sort by" activeOption={sortBy} setActiveOption={setSortBy} options={sortOptions} />
+                <Gap />
+                <Select title="Filter" activeOption={filter} setActiveOption={setFilter} options={filterOptions} />
+                <Gap />
+              </>
+            )}
+          </>
+        }
         showsVerticalScrollIndicator={false}
+        ListFooterComponent={Gap}
         keyExtractor={(t) => t._id}
         renderItem={({ item }) => <TodoItem todo={item} />}
         ItemSeparatorComponent={Gap}
+        ListEmptyComponent={
+          <Text center fontSize={20}>
+            You have no Todos 🫣
+          </Text>
+        }
       />
     </Layout>
   );

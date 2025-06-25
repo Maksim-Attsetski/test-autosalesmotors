@@ -1,5 +1,5 @@
 import * as Location from "expo-location";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions, StyleSheet, View } from "react-native";
 import MapView, { Marker, MarkerDragStartEndEvent, Region } from "react-native-maps";
 
@@ -95,7 +95,7 @@ const Map: React.FC<MapProps> = ({ initCoords, draggable = false, width, height 
   );
 };
 
-export default Map;
+export default memo(Map);
 
 const styles = StyleSheet.create({
   map: {

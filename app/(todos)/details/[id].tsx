@@ -1,10 +1,10 @@
 import { useRoute } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 
-import { FileList, Layout, Map } from "@/components";
+import { BackButton, FileList, Layout, Map } from "@/components";
 import { todoStatuses } from "@/constants";
 import { useFiles } from "@/lib/hooks";
 import { useThemeColor } from "@/lib/hooks/useThemeColor";
@@ -51,61 +51,65 @@ const TodosDetails = () => {
 
   return (
     <Layout>
-      <Gap />
-      <Button onPress={handleGoBack}>Back</Button>
-      <Gap />
-      {todo ? (
-        <>
-          <Text fontSize={28} style={styles.title} center>
-            {todo.title}
-          </Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Gap />
+        <BackButton />
+        <Gap />
+        {todo ? (
+          <>
+            <Text fontSize={28} style={styles.title} center>
+              {todo.title}
+            </Text>
 
-          <Map height={250} width={Dimensions.get("screen").width - 32} />
+            <Map key={params.id + "map"} height={250} width={Dimensions.get("screen").width - 32} />
 
-          <Text fontSize={12}>I don`t connect todo location to map</Text>
-          <Gap />
-          <View style={[{ backgroundColor: colors.background }, styles.card]}>
-            <Description label="Description">{todo?.description}</Description>
-            <Gap y={3} />
-            <Description label="Location">{todo?.location}</Description>
-            <Gap y={3} />
-            <Description label="Status">{todoStatuses[todo?.status]}</Description>
-          </View>
-          <Gap />
-          {files.length > 0 && (
-            <>
-              <View style={[{ backgroundColor: colors.background }, styles.card]}>
-                <Text>Attachments</Text>
-                <FileList clearFiles={clearFiles} files={files} />
-              </View>
-              <Gap />
-            </>
-          )}
-          <Button onPress={handleDeleteTodo}>Delete Todo</Button>
-          <Gap />
-          <TouchableWithoutFeedback onPress={onPressAccordion}>
-            <View>
-              <Button onPress={onPressAccordion} primary>
-                Change ToDo status
-              </Button>
-              <Accordion isExpanded={open} viewKey="Change ToDo status">
-                <View style={styles.actionsContainer}>
-                  <Gap />
-                  {ACTIONS.map((action) => (
-                    <TouchableOpacity key={action.name} onPress={action.action}>
-                      <Text fontSize={24} style={styles.actionName}>
-                        {todoStatuses[action.name as TTodoStatus]}
-                      </Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </Accordion>
+            <Text fontSize={12}>I don`t connect todo location to map</Text>
+            <Gap />
+            <View style={[{ backgroundColor: colors.background }, styles.card]}>
+              <Description label="Description">{todo?.description}</Description>
+              <Gap y={3} />
+              <Description label="Location">{todo?.location}</Description>
+              <Gap y={3} />
+              <Description label="Status">{todoStatuses[todo?.status]}</Description>
             </View>
-          </TouchableWithoutFeedback>
-        </>
-      ) : (
-        <Text>ToDo with id {params.id} can not be founded</Text>
-      )}
+            <Gap />
+            {files.length > 0 && (
+              <>
+                <View style={[{ backgroundColor: colors.background }, styles.card]}>
+                  <Text>Attachments</Text>
+                  <Gap />
+                  <FileList canDelete={false} clearFiles={clearFiles} files={files} />
+                </View>
+                <Gap />
+              </>
+            )}
+            <Button onPress={handleDeleteTodo}>Delete Todo</Button>
+            <Gap />
+            <TouchableWithoutFeedback onPress={onPressAccordion}>
+              <View>
+                <Button onPress={onPressAccordion} primary>
+                  Change ToDo status
+                </Button>
+                <Accordion isExpanded={open} viewKey="Change ToDo status">
+                  <View style={styles.actionsContainer}>
+                    <Gap />
+                    {ACTIONS.map((action) => (
+                      <TouchableOpacity key={action.name} onPress={action.action}>
+                        <Text fontSize={24} style={styles.actionName}>
+                          {todoStatuses[action.name as TTodoStatus]}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </Accordion>
+              </View>
+            </TouchableWithoutFeedback>
+          </>
+        ) : (
+          <Text>ToDo with id {params.id} can not be founded</Text>
+        )}
+        <Gap y={6} />
+      </ScrollView>
     </Layout>
   );
 };

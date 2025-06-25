@@ -1,3 +1,5 @@
+import { IBaseEntity } from "./shared";
+
 export type TTodoStatus = "COMPLETED" | "IN_PROGRESS" | "CANCELLED";
 
 export interface ITodoCreateDto {
@@ -7,8 +9,6 @@ export interface ITodoCreateDto {
   due_at: number;
   attachments: string[];
 }
-export interface ITodo extends ITodoCreateDto {
-  _id: string;
-  created_at: number;
+export interface ITodo extends ITodoCreateDto, IBaseEntity {
   status: TTodoStatus;
 }
