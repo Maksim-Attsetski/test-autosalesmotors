@@ -3,9 +3,9 @@ import React, { FC, memo } from "react";
 import { TouchableOpacity } from "react-native";
 
 import { todoStatuses } from "@/constants";
-import { useThemeColor } from "@/lib/hooks/useThemeColor";
 import { ITodo } from "@/types";
 import { Description, Gap, Text } from "@/ui";
+import { useTheme } from "@react-navigation/native";
 
 interface IProps {
   todo: ITodo;
@@ -13,12 +13,12 @@ interface IProps {
 
 const TodoItem: FC<IProps> = ({ todo }) => {
   const { navigate } = useRouter();
-  const colors = useThemeColor();
+  const { colors } = useTheme();
 
   return (
     <TouchableOpacity
       onPress={() => navigate(`/(todos)/details/${todo._id}`)}
-      style={{ backgroundColor: colors.background, padding: 12, borderRadius: 12 }}
+      style={{ backgroundColor: colors.card, padding: 12, borderRadius: 12 }}
     >
       <Text fontSize={20} center>
         {todo.title}

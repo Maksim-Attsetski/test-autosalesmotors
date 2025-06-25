@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren } from "react";
 import { StyleSheet, View } from "react-native";
 
-import { useThemeColor } from "@/lib/hooks/useThemeColor";
+import { useTheme } from "@react-navigation/native";
 import Text, { ITextProps } from "./Text";
 
 interface IProps extends PropsWithChildren {
@@ -12,11 +12,11 @@ interface IProps extends PropsWithChildren {
 }
 
 const Description: FC<IProps> = ({ label, children, labelProps, textProps, marginVertical = 2 }) => {
-  const colors = useThemeColor();
+  const { colors } = useTheme();
 
   return (
     <View style={[styles.container, { marginVertical }]}>
-      <Text color={colors.subText} {...labelProps}>
+      <Text color={colors.text} style={[labelProps?.style, styles.label]} {...labelProps}>
         {label}
       </Text>
       <Text {...textProps} selectable>
@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flexWrap: "wrap",
+  },
+  label: {
+    opacity: 0.8,
   },
 });
 

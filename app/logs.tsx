@@ -19,6 +19,7 @@ const Logs: FC = () => {
 
       <FlatList
         data={logs}
+        ListEmptyComponent={<Text>You have no logs</Text>}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => deleteLog(item._id)}>
             <Text>{item.action}</Text>

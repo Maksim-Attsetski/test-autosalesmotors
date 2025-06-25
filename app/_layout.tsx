@@ -6,14 +6,23 @@ import "react-native-reanimated";
 
 import { useNotificationsInit } from "@/lib/hooks";
 import { useColorScheme } from "@/lib/hooks/useColorScheme";
+import { useTheme } from "@/store";
+import { useMemo } from "react";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const { theme } = useTheme();
+
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useNotificationsInit();
+
+  const isDarkTheme = useMemo(() => {
+    if (theme === "system") return colorScheme === "dark";
+    return theme === "dark";
+  }, [colorScheme, theme]);
 
   if (!loaded) {
     // Async font loading only occurs in development.
@@ -21,7 +30,7 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={isDarkTheme ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(todos)" options={{ headerShown: false }} />
