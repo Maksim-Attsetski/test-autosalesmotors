@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from "@/lib/hooks/useThemeColor";
 import Gap from "./Gap";
 import Text from "./Text";
 

@@ -1,4 +1,4 @@
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from "@/lib/hooks/useThemeColor";
 import React, { Dispatch, FC, SetStateAction } from "react";
 import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";

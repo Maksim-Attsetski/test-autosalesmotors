@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren } from "react";
 import { StyleSheet, View } from "react-native";
 
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from "@/lib/hooks/useThemeColor";
 import Text, { ITextProps } from "./Text";
 
 interface IProps extends PropsWithChildren {

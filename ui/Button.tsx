@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 import { TColors } from "@/constants/Colors";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from "@/lib/hooks/useThemeColor";
 import Text, { ITextProps } from "./Text";
 
 export interface IIconProps {

@@ -4,6 +4,8 @@ export interface ITodoCreateDto {
   title: string;
   description: string;
   location: string;
+  due_at: number;
+  attachments: string[];
 }
 export interface ITodo extends ITodoCreateDto {
   _id: string;

@@ -1,7 +1,8 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 
-import { Layout } from "@/components";
+import { DatePicker, Layout } from "@/components";
+import { useNotifications } from "@/lib/hooks";
 import { useTodos } from "@/store";
 import { ITodoCreateDto } from "@/types";
 import { Button, Gap, Input, Text } from "@/ui";
@@ -10,6 +11,9 @@ const TodosCreate = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
+  const [dueAt, setDueAt] = useState(new Date());
+
+  const { notify } = useNotifications();
 
   const { addTodo } = useTodos();
   const { canGoBack, back } = useRouter();
@@ -24,13 +28,22 @@ const TodosCreate = () => {
     canGoBack() && back();
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     const newTodo: ITodoCreateDto = {
       title,
       description,
       location,
+      due_at: dueAt.getTime(),
+      attachments: [],
     };
+
     addTodo(newTodo);
+
+    await notify({
+      title: "You create new ToDo",
+      body: title,
+      data: { newTodo },
+    });
 
     handleGoBack();
     handleClearAll();
@@ -65,6 +78,9 @@ const TodosCreate = () => {
         validate={(v) => v.length > 9}
         errorMsg="Минимум 10 символов"
       />
+      <Gap y={3} />
+
+      <DatePicker minimumDate={new Date()} value={dueAt} setValue={setDueAt} />
       <Gap />
       <Button onPress={onSubmit} primary disabled={title.length < 2 || location.length < 9}>
         Create

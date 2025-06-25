@@ -3,7 +3,7 @@ import React, { FC, memo } from "react";
 import { TouchableOpacity } from "react-native";
 
 import { todoStatuses } from "@/constants";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from "@/lib/hooks/useThemeColor";
 import { ITodo } from "@/types";
 import { Description, Gap, Text } from "@/ui";
 

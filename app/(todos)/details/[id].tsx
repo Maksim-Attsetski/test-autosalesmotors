@@ -2,7 +2,7 @@ import React from "react";
 
 import { Layout } from "@/components";
 import { todoStatuses } from "@/constants";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import { useThemeColor } from "@/lib/hooks/useThemeColor";
 import { useTodos } from "@/store";
 import { TTodoStatus } from "@/types";
 import { Accordion, Button, Description, Gap, Text } from "@/ui";
