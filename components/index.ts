@@ -1,6 +1,7 @@
 import DatePicker from "./DatePicker";
+import FileList from "./FileList";
 import Layout from "./Layout";
 import Map from "./Map";
 import TodoItem from "./TodoItem";
 
-export { DatePicker, Layout, Map, TodoItem };
+export { DatePicker, FileList, Layout, Map, TodoItem };

@@ -1,25 +1,29 @@
+import { useRoute } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import React from "react";
+import { Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
 
-import { Layout, Map } from "@/components";
+import { FileList, Layout, Map } from "@/components";
 import { todoStatuses } from "@/constants";
+import { useFiles } from "@/lib/hooks";
 import { useThemeColor } from "@/lib/hooks/useThemeColor";
 import { useTodos } from "@/store";
 import { TTodoStatus } from "@/types";
 import { Accordion, Button, Description, Gap, Text } from "@/ui";
-import { useRoute } from "@react-navigation/native";
-import { useRouter } from "expo-router";
-import { Dimensions, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import { useSharedValue } from "react-native-reanimated";
 
 const TodosDetails = () => {
   const params = useRoute().params as { id: string };
 
   const colors = useThemeColor();
-  const { editTodo, deleteTodo, todos } = useTodos();
   const { canGoBack, back } = useRouter();
+
+  const { editTodo, deleteTodo, todos } = useTodos();
 
   const open = useSharedValue(false);
   const todo = todos.find((item) => item._id === params.id);
+
+  const { files, clearFiles } = useFiles(todo?.attachments);
 
   const ACTIONS = [
     { name: "CANCELLED", action: () => handleChangeStatus("CANCELLED") },
@@ -68,6 +72,15 @@ const TodosDetails = () => {
             <Description label="Status">{todoStatuses[todo?.status]}</Description>
           </View>
           <Gap />
+          {files.length > 0 && (
+            <>
+              <View style={[{ backgroundColor: colors.background }, styles.card]}>
+                <Text>Attachments</Text>
+                <FileList clearFiles={clearFiles} files={files} />
+              </View>
+              <Gap />
+            </>
+          )}
           <Button onPress={handleDeleteTodo}>Delete Todo</Button>
           <Gap />
           <TouchableWithoutFeedback onPress={onPressAccordion}>

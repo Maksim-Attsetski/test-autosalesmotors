@@ -1,8 +1,8 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 
-import { DatePicker, Layout } from "@/components";
-import { useNotifications } from "@/lib/hooks";
+import { DatePicker, FileList, Layout } from "@/components";
+import { useFiles, useNotifications } from "@/lib/hooks";
 import { dateUtils } from "@/lib/utils";
 import { useTodos } from "@/store";
 import { ITodoCreateDto } from "@/types";
@@ -14,6 +14,7 @@ const TodosCreate = () => {
   const [location, setLocation] = useState("");
   const [dueAt, setDueAt] = useState(new Date());
 
+  const { clearFiles, files, pickFile, saveFiles } = useFiles();
   const { notify } = useNotifications();
 
   const { addTodo } = useTodos();
@@ -35,12 +36,13 @@ const TodosCreate = () => {
       description,
       location,
       due_at: dueAt.getTime(),
-      attachments: [],
+      attachments: files.map((f) => f.name),
     };
 
     addTodo(newTodo);
-    const seconds = dateUtils.getSecondForExpire(dateUtils.getAdjustedDate(-1, "month", dueAt));
+    await saveFiles();
 
+    const seconds = dateUtils.getSecondForExpire(dateUtils.getAdjustedDate(-1, "month", dueAt));
     await notify(
       {
         title: "You create new ToDo",
@@ -84,6 +86,9 @@ const TodosCreate = () => {
         errorMsg="Минимум 10 символов"
       />
       <Gap y={3} />
+
+      <Button onPress={pickFile}>Выйбрать файл</Button>
+      <FileList clearFiles={clearFiles} files={files} />
 
       <DatePicker minimumDate={new Date()} value={dueAt} setValue={setDueAt} />
       <Gap />
